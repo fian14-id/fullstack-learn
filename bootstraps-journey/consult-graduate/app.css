@@ -1,0 +1,203 @@
+:root {
+    --font-inter: 'Inter', sans-serif;
+    --primary-color: #27548A;
+    --secondary-color: #DDA853;
+    --background-color: #F3F3E0;
+    --text-color: #183B4E;
+    --font-size: 16px;
+}
+
+*, html, body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+::selection {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+body {
+    font-family: var(--font-inter);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden visible;
+    font-size: var(--font-size);
+}
+
+strong {
+    color: var(--text-color);
+}
+
+#navbar {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 200;
+    padding: 0.5rem 1.5rem;
+    margin-top: 0.5rem;
+}
+
+#navbar > .container-fluid {
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: fit-content;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+}
+
+
+img {
+    object-fit: cover;
+    aspect-ratio: 6 / 4;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+
+#cta-nav {
+    padding: 0.3rem 1.5rem;
+    background: none;
+    border: 1px solid var(--primary-color);
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+#navbar > .container-fluid > .rounded-pill:hover {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+#navbar .navbar-collapse.collapse.show {
+    display: flex !important;
+    flex-direction: column;
+    gap: 1rem;
+    /*text-align: center;
+    */color: var(--background-color);
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+#navbar > .container-fluid > .navbar-toggler {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+}
+
+#navbar > .container-fluid > .navbar-toggler:focus {
+    outline: none;
+
+}
+
+
+#navbar .navbar-collapse > .navbar-nav {
+    display: flex;
+    /* justify-content: center; */
+    text-align: center;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#navbar .navbar-collapse > .navbar-nav > .nav-link {
+    color: var(--text-color);
+    font-weight: 300;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+#navbar .navbar-collapse > .navbar-nav > .nav-link.active {
+    color: var(--secondary-color);
+}
+
+#navbar .navbar-collapse > .navbar-nav > .nav-link:hover {
+    color: var(--secondary-color);
+}
+
+section.container-fluid {
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0;
+}
+
+#title-overview > h1 {
+    font-size: 1.5rem;
+    font-weight: 100;
+}
+
+#title-what > h2 {
+    font-size: 1.8rem;
+}
+
+#title-what > p {
+    font-size: 1rem;
+    text-align: justify;
+}
+
+
+/* #image-sibling > img {
+    aspect-ratio: 6 / 4;
+    object-fit: cover;
+} */
+
+
+
+
+@media (min-width: 992px) {
+    
+    #title-what > h2 {
+        font-size: 2rem;
+    }
+    
+    #title-what > p {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+    /* #image-sibling > img {
+        aspect-ratio: 16 / 6;
+        object-fit: cover;
+    } */
+
+    img {
+        object-fit: cover;
+        aspect-ratio: 5 / 4;
+}
+
+    #navbar > .container-fluid {
+        padding: 0.5rem 1.5rem;
+        /* margin-top: 2rem; */
+    }
+
+    #cta-nav {
+        font-size: 0.5;
+    }
+
+    #navbar .navbar-collapse > .navbar-nav {
+        display: flex;
+        width: 100%;
+        gap: 2rem;
+    }
+  }

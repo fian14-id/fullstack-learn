@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengupas First Level Maintenance (FLM)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Gambaran Umum: Interactive stat cards (HTML/CSS/JS) to highlight key benefits (Goal: Inform, Interaction: Static display, Justification: Quick visual impact). Clickable card for definition (Goal: Inform, Interaction: Click to toggle, Justification: Focused information).
+        - Peran FLM (Tugas): Tabs (HTML/CSS/JS) for daily/periodic tasks (Goal: Organize, Interaction: Click to switch tab, Justification: Clear separation of task types).
+        - Peran FLM (Keterampilan): Interactive list/grid (HTML/CSS/JS) with hover effects (Goal: Inform, Interaction: Hover for emphasis, Justification: Concise presentation of skills).
+        - Tantangan: Two-column layout with expandable items (HTML/CSS/JS) (Goal: Compare & Inform, Interaction: Click to expand/collapse, Justification: Structured view with on-demand detail).
+        - Karir (Jenjang): HTML table for Afnor levels (Goal: Organize, Interaction: Static display, Justification: Clear hierarchy display).
+        - Gaji: Bar chart (Chart.js/Canvas) for salary ranges (Goal: Compare, Interaction: Tooltips on hover, Justification: Visual comparison of compensation). Clickable tags for salary factors (HTML/CSS/JS) (Goal: Inform, Interaction: Click to show detail, Justification: Quick access to influencing factors).
+        - Wawasan (Forum): Accordion (HTML/CSS/JS) (Goal: Inform, Interaction: Click to expand/collapse, Justification: Digestible presentation of multiple insights).
+        - Rekomendasi: Tabs (HTML/CSS/JS) for organization/individual (Goal: Organize, Interaction: Click to switch tab, Justification: Clear separation of advice).
+        All textual content is summarized and presented in digestible blocks. NO SVG/Mermaid used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter as a common sans-serif font */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Adjusted max-width for better display */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 450px; /* Max height */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px; /* Height for medium screens and up */
+            }
+        }
+        .section-title {
+            font-size: 1.75rem; /* 28px */
+            font-weight: 600;
+            margin-bottom: 1.5rem; /* 24px */
+            color: #1e3a8a; /* Tailwind's blue-800 as a deep sky/blue */
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s, color 0.3s;
+            color: #374151; /* gray-700 */
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+        }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tab-button.active {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+        }
+        .accordion-button {
+            background-color: #f3f4f6; /* gray-100 */
+            color: #1f2937; /* gray-800 */
+            padding: 0.75rem 1rem;
+            width: 100%;
+            text-align: left;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem;
+            transition: background-color 0.3s;
+            margin-bottom: 0.25rem;
+        }
+        .accordion-button:hover {
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        .accordion-content {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-top: 0;
+            border-radius: 0 0 0.375rem 0.375rem;
+            background-color: white;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem; /* 32px */
+            font-weight: 700;
+            color: #1d4ed8; /* blue-700 */
+        }
+        .stat-label {
+            font-size: 0.875rem; /* 14px */
+            color: #4b5563; /* gray-600 */
+            margin-top: 0.5rem;
+        }
+        /* Custom scrollbar for better aesthetics if needed, optional */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6; /* blue-500 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb; /* blue-600 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-2xl font-bold text-sky-700">First Level Maintenance (FLM)</h1>
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#gambaran" class="nav-link">Gambaran</a>
+                    <a href="#peran" class="nav-link">Peran</a>
+                    <a href="#tantangan" class="nav-link">Tantangan</a>
+                    <a href="#karir" class="nav-link">Karir & Gaji</a>
+                    <a href="#wawasan" class="nav-link">Wawasan</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-slate-700 hover:text-sky-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a href="#gambaran" class="block nav-link px-4 py-2 text-sm">Gambaran</a>
+            <a href="#peran" class="block nav-link px-4 py-2 text-sm">Peran</a>
+            <a href="#tantangan" class="block nav-link px-4 py-2 text-sm">Tantangan</a>
+            <a href="#karir" class="block nav-link px-4 py-2 text-sm">Karir & Gaji</a>
+            <a href="#wawasan" class="block nav-link px-4 py-2 text-sm">Wawasan</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="gambaran" class="py-8 md:py-12">
+            <h2 class="section-title">Gambaran Umum FLM</h2>
+            <p class="mb-6 text-slate-600">Bagian ini menjelaskan definisi dasar First Level Maintenance (FLM), signifikansinya dalam industri, serta manfaat utama yang dapat diperoleh dari implementasi FLM yang efektif. FLM adalah fondasi penting untuk menjaga keandalan peralatan dan efisiensi operasional.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8 cursor-pointer" id="definisi-flm-card">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-semibold text-sky-700">Apa itu First Level Maintenance (FLM)?</h3>
+                    <span id="definisi-toggle-icon" class="text-sky-600 transform transition-transform duration-300">&#9660;</span> </div>
+                <div id="definisi-flm-content" class="mt-4 text-slate-600 hidden">
+                    <p>First Level Maintenance (FLM) didefinisikan sebagai serangkaian operasi pemeliharaan skala kecil pada mesin dan peralatan yang dapat dilaksanakan langsung oleh operator atau personel non-spesialis. Intervensi ini bersifat sederhana, tidak memerlukan pembongkaran atau pembukaan peralatan yang kompleks, dan umumnya dilakukan setelah pelatihan di lapangan yang memadai.</p>
+                    <p class="mt-2">Aktivitas inti meliputi pembersihan teknis, inspeksi visual, pelumasan, pemeriksaan level cairan, serta penyesuaian minor.</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-sky-700 mb-4">Manfaat Utama FLM</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card">
+                    <div class="stat-value">30%</div>
+                    <div class="stat-label">Pengurangan Biaya Pemeliharaan Keseluruhan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">25-40%</div>
+                    <div class="stat-label">Penurunan Waktu Henti Mesin</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">50%</div>
+                    <div class="stat-label">Pengurangan Intervensi Darurat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">25%</div>
+                    <div class="stat-label">Perpanjangan Umur Peralatan</div>
+                </div>
+            </div>
+            <p class="text-slate-600">Implementasi FLM yang efektif bertindak sebagai "garis pertahanan pertama" terhadap potensi kerusakan industri, secara substansial berkontribusi pada efisiensi operasional dan penghematan biaya jangka panjang.</p>
+        </section>
+
+        <section id="peran" class="py-8 md:py-12 bg-slate-100 rounded-lg p-6">
+            <h2 class="section-title">Peran FLM</h2>
+            <p class="mb-6 text-slate-600">Bagian ini merinci tugas dan tanggung jawab utama dalam FLM, kualifikasi pendidikan dan pengalaman yang umumnya dibutuhkan, keterampilan esensial yang harus dimiliki, serta gambaran umum mengenai lingkungan kerja seorang profesional FLM.</p>
+
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-sky-700 mb-3">Tugas & Tanggung Jawab</h3>
+                <div class="flex flex-wrap mb-4">
+                    <button class="tab-button active" data-tab="tugas-harian">Tugas Harian & Rutin</button>
+                    <button class="tab-button" data-tab="tugas-berkala">Tugas Berkala</button>
+                </div>
+                <div id="tugas-harian" class="tab-content bg-white p-4 rounded-md shadow">
+                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                        <li>Inspeksi Visual: Mendeteksi anomali seperti keausan atau kebocoran.</li>
+                        <li>Pembersihan Stasiun Kerja: Menghilangkan debu dan kotoran.</li>
+                        <li>Pemeriksaan Level Cairan: Memastikan level oli, pelumas, pendingin cukup.</li>
+                        <li>Operasi Pelumasan: Melumasi bagian bergerak secara teratur.</li>
+                        <li>Penggantian Komponen Sederhana: Bola lampu, sekering, filter.</li>
+                        <li>Pengecekan Kondisi: Memantau suara, getaran, suhu abnormal.</li>
+                    </ul>
+                </div>
+                <div id="tugas-berkala" class="tab-content hidden bg-white p-4 rounded-md shadow">
+                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                        <li>Penggantian komponen aus sederhana (rel, rantai, sabuk).</li>
+                        <li>*Descaling* permukaan *run-off* (misalnya pada menara pendingin).</li>
+                        <li>Pemeriksaan dan kalibrasi dasar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Kualifikasi & Keterampilan</h3>
+                    <div class="bg-white p-4 rounded-md shadow mb-4">
+                        <h4 class="font-semibold text-slate-700">Kualifikasi Pendidikan & Pengalaman</h4>
+                        <p class="text-sm text-slate-600 mt-1">Umumnya SMA/SMK atau sekolah kejuruan, dengan pelatihan tambahan di lapangan. Beberapa posisi mungkin memerlukan D3/S1 Teknik. Pengalaman *entry-level* seringkali tidak mutlak, namun inisiatif dan kemauan belajar sangat dihargai.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-md shadow">
+                        <h4 class="font-semibold text-slate-700">Keterampilan Esensial</h4>
+                        <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 mt-1">
+                            <li>Pemahaman Teknis Mesin</li>
+                            <li>Pemecahan Masalah</li>
+                            <li>Perhatian terhadap Detail</li>
+                            <li>Komunikasi Efektif</li>
+                            <li>Manajemen Waktu</li>
+                            <li>Kemampuan Fisik (tergantung pekerjaan)</li>
+                            <li>Literasi Komputer Dasar</li>
+                            <li>Kewaspadaan Keselamatan</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Lingkungan Kerja</h3>
+                    <div class="bg-white p-4 rounded-md shadow">
+                        <p class="text-slate-600">Teknisi FLM bekerja di berbagai sektor industri, langsung di lokasi peralatan. Rutinitas melibatkan pengecekan, pembersihan, dan respons cepat. Kolaborasi tim, tekanan waktu, dan kondisi kerja yang terkadang keras (misalnya pertambangan) adalah bagian dari pekerjaan. Keselamatan kerja (LOTO, APD) adalah fundamental.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tantangan" class="py-8 md:py-12">
+            <h2 class="section-title">Tantangan dalam FLM</h2>
+            <p class="mb-6 text-slate-600">Implementasi FLM yang efektif seringkali dihadapkan pada berbagai tantangan, baik dari sisi operasional maupun sumber daya manusia. Memahami dan mengatasi tantangan ini adalah kunci keberhasilan program FLM.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">Tantangan Operasional</h3>
+                    <div class="space-y-3">
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Pemeliharaan Tidak Terencana/Terjadwal</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Masalah mendadak atau jadwal yang tidak terperinci menyebabkan inefisiensi dan tindakan korektif yang kurang maksimal.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Proses Manual</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Ketergantungan pada dokumen fisik memakan waktu, rentan kesalahan, dan menyulitkan akses informasi *real-time*.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Minimnya Informasi Real-time</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Kurangnya data terkini kondisi mesin atau suku cadang menghambat pengambilan keputusan cepat.</p></div>
+                        </div>
+                         <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Manajemen Suku Cadang</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Masalah kelebihan atau kekurangan stok karena kurangnya visibilitas inventaris.</p></div>
+                        </div>
+                         <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Biaya Operasional</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Semua tantangan di atas berujung pada peningkatan biaya, *idle time*, dan kerugian produksi.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">Tantangan Sumber Daya Manusia</h3>
+                    <div class="space-y-3">
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Persepsi Beban Kerja</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Operator merasa beban kerja sudah berat tanpa tanggung jawab pemeliharaan tambahan.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Demarkasi Peran</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Isu dengan serikat pekerja atau deskripsi pekerjaan saat operator mengambil tugas pemeliharaan.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Kesenjangan Komunikasi & Budaya Menyalahkan</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Kurangnya komunikasi efektif memicu frustrasi dan saling menyalahkan antara tim.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Bahaya Keselamatan</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Risiko jika tugas tidak dilakukan dengan prosedur dan pelatihan yang tepat.</p></div>
+                        </div>
+                         <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Tekanan Kerja & Kondisi Area</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Tekanan waktu tinggi dan lingkungan kerja yang keras menjadi tantangan.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="karir" class="py-8 md:py-12 bg-slate-100 rounded-lg p-6">
+            <h2 class="section-title">Karir & Gaji dalam FLM</h2>
+            <p class="mb-6 text-slate-600">Bagian ini membahas prospek karir di bidang First Level Maintenance, termasuk jenjang karir yang umum, serta memberikan gambaran mengenai gaji dan kompensasi di Indonesia beserta faktor-faktor yang mempengaruhinya.</p>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-sky-700 mb-4">Jenjang Karir Pemeliharaan (Kerangka Afnor)</h3>
+                <div class="overflow-x-auto bg-white p-4 rounded-md shadow">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Level</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Kompleksitas</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Tugas Khas</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Kualifikasi Personel</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200 text-sm text-slate-600">
+                            <tr>
+                                <td class="px-4 py-2 whitespace-nowrap font-medium">Level 1 (FLM)</td>
+                                <td class="px-4 py-2">Sederhana, tidak perlu pembongkaran</td>
+                                <td class="px-4 py-2">Pembersihan, inspeksi, pelumasan, penggantian minor</td>
+                                <td class="px-4 py-2">Operator (setelah pelatihan)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 whitespace-nowrap font-medium">Level 2</td>
+                                <td class="px-4 py-2">Kurang kompleks, prosedur sederhana</td>
+                                <td class="px-4 py-2">Penggantian komponen aus (rel, rantai), descaling</td>
+                                <td class="px-4 py-2">Teknisi berkualifikasi rata-rata</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 whitespace-nowrap font-medium">Level 3</td>
+                                <td class="px-4 py-2">Kompleks, perlu diagnosis</td>
+                                <td class="px-4 py-2">Intervensi di lokasi/bengkel, analisis getaran</td>
+                                <td class="px-4 py-2">Teknisi spesialis</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 whitespace-nowrap font-medium">Level 4</td>
+                                <td class="px-4 py-2">Sangat kompleks, keahlian khusus</td>
+                                <td class="px-4 py-2">Penggantian katup kompresor, analisis pelumas, termografi</td>
+                                <td class="px-4 py-2">Tim teknisi spesialis diawasi manajer</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 whitespace-nowrap font-medium">Level 5</td>
+                                <td class="px-4 py-2">Paling kompleks, setara manufaktur</td>
+                                <td class="px-4 py-2">Perbaikan besar, perombakan total, pembangunan kembali</td>
+                                <td class="px-4 py-2">Produsen peralatan atau perusahaan disetujui</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold text-sky-700 mb-4">Gaji & Kompensasi di Indonesia</h3>
+                <p class="text-slate-600 mb-4 text-sm">Kisaran gaji sangat bervariasi tergantung industri, lokasi, pengalaman, dan ukuran perusahaan. Berikut adalah gambaran umum untuk beberapa posisi terkait FLM (per bulan).</p>
+                <div class="chart-container mb-6">
+                    <canvas id="salaryChart"></canvas>
+                </div>
+                <h4 class="font-semibold text-slate-700 mb-2">Faktor Penentu Gaji:</h4>
+                <div class="flex flex-wrap gap-2">
+                    <button class="salary-factor-btn">Pengalaman</button>
+                    <button class="salary-factor-btn">Lokasi</button>
+                    <button class="salary-factor-btn">Jenis Perusahaan</button>
+                    <button class="salary-factor-btn">Status Kepegawaian</button>
+                    <button class="salary-factor-btn">Tunjangan & Bonus</button>
+                </div>
+                <div id="salary-factor-detail" class="mt-3 p-3 bg-sky-50 border border-sky-200 rounded-md text-sm text-sky-700 hidden"></div>
+            </div>
+        </section>
+
+        <section id="wawasan" class="py-8 md:py-12">
+            <h2 class="section-title">Wawasan Lapangan & Rekomendasi</h2>
+            <p class="mb-6 text-slate-600">Bagian ini menyajikan perspektif dari pengalaman nyata para profesional di lapangan, membahas konsep keterlibatan operator dalam pemeliharaan, dan diakhiri dengan rekomendasi strategis untuk organisasi dan individu yang terlibat atau tertarik dengan FLM.</p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">Wawasan dari Forum Diskusi (Contoh: Reddit)</h3>
+                    <div class="space-y-3">
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Pembelajaran Berkelanjutan</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Teknisi baru banyak belajar di tempat kerja, melengkapi pendidikan formal. Sumber daya online (mis. YouTube) penting jika panduan minim.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Manajemen Waktu & Proaktivitas</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Saat sepi, teknisi didorong proaktif mencari masalah atau melakukan pekerjaan "sibuk" (membersihkan, mengatur).</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Kepemilikan Masalah</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Budaya "jika Anda menemukannya, ANDA memperbaikinya," menuntut kepemilikan penuh.</p></div>
+                        </div>
+                         <div class="accordion-item">
+                            <button class="accordion-button flex justify-between items-center"><span>Prioritas Tugas & Pengembangan Awal</span> <span class="transform transition-transform duration-300">&#9660;</span></button>
+                            <div class="accordion-content hidden"><p class="text-sm text-slate-600">Pendatang baru mulai dari tugas mudah, penuhi ekspektasi, lalu cari posisi lebih baik setelah 6-12 bulan pengalaman.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">Konsep "Operator Maintenance"</h3>
+                     <div class="bg-white p-4 rounded-md shadow">
+                        <p class="text-sm text-slate-600 mb-2">Keterlibatan operator dalam pemeliharaan (pemeliharaan otonom) mendapat tinjauan beragam:</p>
+                        <h5 class="font-semibold text-red-600 text-sm mt-2">Kelemahan:</h5>
+                        <ul class="list-disc list-inside text-xs text-red-500 space-y-1 pl-4">
+                            <li>Istilah "maintenance" memicu masalah demarkasi peran & upah.</li>
+                            <li>Konsep "otonom" sering disalahpahami.</li>
+                            <li>Implementasi buruk bisa sembunyikan masalah & bahaya keselamatan.</li>
+                            <li>Kurang komunikasi bisa picu budaya menyalahkan.</li>
+                        </ul>
+                        <h5 class="font-semibold text-green-600 text-sm mt-3">Keunggulan:</h5>
+                        <ul class="list-disc list-inside text-xs text-green-500 space-y-1 pl-4">
+                            <li>Menumbuhkan rasa "kepemilikan" peralatan.</li>
+                            <li>Mengurangi panggilan masalah kecil yang tidak perlu.</li>
+                            <li>Operator jadi "mata, telinga, hidung" pemeliharaan, deteksi dini.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-xl font-semibold text-sky-700 mb-3">Rekomendasi</h3>
+                <div class="flex flex-wrap mb-4">
+                    <button class="tab-button active" data-tab="rek-organisasi">Untuk Organisasi</button>
+                    <button class="tab-button" data-tab="rek-individu">Untuk Individu</button>
+                </div>
+                <div id="rek-organisasi" class="tab-content bg-white p-4 rounded-md shadow">
+                    <ul class="list-disc list-inside space-y-2 text-slate-600 text-sm">
+                        <li>Investasi dalam Digitalisasi FLM (CMMS).</li>
+                        <li>Pemberdayaan Operator melalui Pelatihan Komprehensif.</li>
+                        <li>Membangun Budaya Kepemilikan dan Kolaborasi.</li>
+                        <li>Meninjau Ulang Demarkasi Peran secara adil.</li>
+                    </ul>
+                </div>
+                <div id="rek-individu" class="tab-content hidden bg-white p-4 rounded-md shadow">
+                     <ul class="list-disc list-inside space-y-2 text-slate-600 text-sm">
+                        <li>Fokus pada Keterampilan Dasar yang Kuat (inspeksi, pembersihan, pelumasan).</li>
+                        <li>Kembangkan Keterampilan Lunak (pemecahan masalah, komunikasi, manajemen waktu).</li>
+                        <li>Proaktif dalam Pembelajaran Berkelanjutan (pelatihan, sertifikasi, sumber online).</li>
+                        <li>Jelajahi Jalur Spesialisasi seiring pengalaman.</li>
+                        <li>Pahami Konteks Gaji (riset industri, lokasi, tunjangan).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 text-center p-6 mt-12">
+        <p class="text-sm">&copy; <span id="currentYear"></span> Aplikasi Interaktif FLM. Dibuat berdasarkan laporan penelitian.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function () {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Smooth scroll for navigation links & active state
+            const navLinks = document.querySelectorAll('nav a[href^="#"], #mobile-menu a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        // Close mobile menu on click
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                        // Active link styling
+                        navLinks.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                        // For desktop nav, ensure the corresponding link is also marked active
+                        const desktopLink = document.querySelector(`nav a[href="${targetId}"]`);
+                        if(desktopLink) desktopLink.classList.add('active');
+
+                    }
+                });
+            });
+            
+            // Update active nav link on scroll
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) { // 70 for header height + buffer
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                         const desktopLink = document.querySelector(`nav a[href="#${current}"]`);
+                        if(desktopLink) desktopLink.classList.add('active');
+                    }
+                });
+            });
+
+
+            // Definisi FLM card toggle
+            const definisiCard = document.getElementById('definisi-flm-card');
+            const definisiContent = document.getElementById('definisi-flm-content');
+            const definisiToggleIcon = document.getElementById('definisi-toggle-icon');
+            if (definisiCard && definisiContent && definisiToggleIcon) {
+                definisiCard.addEventListener('click', function() {
+                    definisiContent.classList.toggle('hidden');
+                    definisiToggleIcon.classList.toggle('rotate-180');
+                });
+            }
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const tabId = this.dataset.tab;
+                    
+                    // Deactivate all buttons in the same group
+                    this.parentElement.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents in the same group and show the target one
+                    let parentSection = this.closest('section, div.mb-8, div:has(> .tab-content)'); // Find parent container of tabs
+                    if (!parentSection) parentSection = document; // Fallback to document if specific parent not found
+
+                    parentSection.querySelectorAll('.tab-content').forEach(content => {
+                         if (content.id === tabId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Accordion functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const button = item.querySelector('.accordion-button');
+                const content = item.querySelector('.accordion-content');
+                const icon = button.querySelector('span:last-child');
+                if (button && content && icon) {
+                    button.addEventListener('click', function() {
+                        const isHidden = content.classList.contains('hidden');
+                        // Close all other accordions in the same group (optional, if desired)
+                        // item.parentElement.querySelectorAll('.accordion-content').forEach(el => el.classList.add('hidden'));
+                        // item.parentElement.querySelectorAll('.accordion-button span:last-child').forEach(ic => ic.classList.remove('rotate-180'));
+                        
+                        content.classList.toggle('hidden');
+                        icon.classList.toggle('rotate-180', !isHidden);
+                    });
+                }
+            });
+
+            // Salary Chart
+            const ctx = document.getElementById('salaryChart')?.getContext('2d');
+            if (ctx) {
+                const salaryData = {
+                    labels: [
+                        'Operator Produksi (Umum)', 
+                        'Helper/Junior Mechanic (Umum)', 
+                        'Teknisi Instalasi Listrik (Entry)',
+                        'Teknisi Instalasi Listrik (Berpengalaman)',
+                        'Teknisi Junior (Migas)',
+                        'Teknisi Menengah (Migas)',
+                        'Teknisi Senior (Migas)'
+                    ],
+                    datasets: [{
+                        label: 'Kisaran Gaji Minimum (Juta Rp)',
+                        data: [4.0, 1.5, 2.5, 4.0, 6.0, 8.0, 10.0],
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)', // blue-500 with opacity
+                        borderColor: 'rgba(59, 130, 246, 1)', // blue-500
+                        borderWidth: 1
+                    }, {
+                        label: 'Kisaran Gaji Maksimum (Juta Rp)',
+                        data: [6.0, 2.5, 3.5, 6.0, 7.5, 9.5, 11.0],
+                        backgroundColor: 'rgba(30, 64, 175, 0.6)', // blue-800 with opacity
+                        borderColor: 'rgba(30, 64, 175, 1)', // blue-800
+                        borderWidth: 1
+                    }]
+                };
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: salaryData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Gaji (Juta Rupiah per Bulan)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                     callback: function(value, index, values) { // Wrap long labels
+                                        const label = this.getLabelForValue(value);
+                                        if (label.length > 16) {
+                                            return label.match(/.{1,16}/g); // Split into lines of 16 chars
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(context.parsed.y * 1000000).replace('Rp', 'Rp ').replace(',0', '');
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Salary factor buttons
+            const salaryFactorBtns = document.querySelectorAll('.salary-factor-btn');
+            const salaryFactorDetail = document.getElementById('salary-factor-detail');
+            const factorDetails = {
+                "Pengalaman": "Semakin banyak pengalaman, potensi gaji semakin tinggi.",
+                "Lokasi": "Kota besar atau pusat industri cenderung menawarkan kompensasi lebih tinggi.",
+                "Jenis Perusahaan": "Perusahaan besar, terutama sektor migas, umumnya menawarkan gaji lebih tinggi.",
+                "Status Kepegawaian": "Karyawan tetap sering menerima gaji pokok dan tunjangan lebih lengkap.",
+                "Tunjangan & Bonus": "Tunjangan (transportasi, makan) dan bonus tahunan dapat meningkatkan total pendapatan."
+            };
+
+            if (salaryFactorBtns.length > 0 && salaryFactorDetail) {
+                salaryFactorBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const factor = this.textContent;
+                        salaryFactorDetail.textContent = factorDetails[factor] || "Detail tidak tersedia.";
+                        salaryFactorDetail.classList.remove('hidden');
+                        
+                        // Highlight active button
+                        salaryFactorBtns.forEach(b => b.classList.remove('bg-sky-600', 'text-white'));
+                        this.classList.add('bg-sky-600', 'text-white');
+                    });
+                });
+            }
+            
+            // Set current year in footer
+            const currentYearElement = document.getElementById('currentYear');
+            if (currentYearElement) {
+                currentYearElement.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+</html>

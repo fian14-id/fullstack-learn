@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tips Belajar Bahasa Inggris - Bootstrap Journey</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/app.css" />
+  </head>
+  <body class="position-relative">
+    <nav
+      class="navbar navbar-expand-lg bg-dark fixed-top px-4 py-0"
+    >
+    <div class="container-fluid py-4">
+      <a class="navbar-brand text-warning fw-bolder">UpLevel</a>
+      <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#overview">Pendahuluan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#objective">Tujuan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#roadmap">Gambaran</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tips-tips</a>
+            <ul class="dropdown-menu">
+              <li><a href="#mentality" class="dropdown-item">Mentality</a></li>
+              <li>
+                <hr class="dropdown-dividier">
+              </li>
+              <li><a href="#habbits" class="dropdown-item">Habbits</a></li>
+              <li><a href="#read" class="dropdown-item">Read</a></li>
+              <li><a href="#hearing" class="dropdown-item">Hearing</a></li>
+              <li><a href="#write" class="dropdown-item">Write & Speaking</a></li>
+            </ul>
+          </li>
+          </li>
+        </ul>
+        <button class="btn btn-warning text-dark fw-medium ">Download Book</button>
+      </div>
+      <!-- <button class="btn btn-dark fw-semibold">Buy Book</button> -->
+    </div>
+    </nav>
+    <section class="container d-flex justify-content-center">
+      <figure
+          id="alertChoose"
+          class="d-none text-center alert alert-danger position-fixed mt-4 container left-50 w-50" style="z-index: 50;"
+        >
+          <blockquote class="blockquote">
+            <p>Coming Soon</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Fianity <cite title="Source Title">Bootstrap Journey</cite>
+          </figcaption>
+        </figure>
+    </section>
+    <section class="homescreen">
+      <main class="container d-flex flex-column justify-content-center vh-100">
+        <h1 class="display-3 display-4-sm fw-bolder">
+          Tips Belajar Bahasa Inggris <strong class="text-warning">tanpa mengganggu</strong> kehidupan Sehari-hari
+        </h1>
+        <p class="h3 fw-light w-50 mt-2">
+          Belajar bahasa inggris tanpa membeli course
+          ataupun menggangu kehidupan sehari-hari kita saat ini.
+        </p>
+        <div class="d-inline-block">
+          <button
+            id="handleAlert"
+            type="button"
+            class="btn btn-dark text-warning fw-semibold d-flex align-items-center gap-2 px-4 mt-2"
+            onclick="openAlert()"
+          >
+            <span
+              class="spinner-border spinner-border-sm d-none"
+              id="spinner"
+              role="status"
+            ></span
+            ><span class="d-flex align-items-center gap-2" id="btn-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square-fill" viewBox="0 0 16 16">
+              <path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zM5.904 10.803 10 6.707v2.768a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.525a.5.5 0 1 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 .707.707"/>
+            </svg>&nbsp;Free Book</span>
+          </button>
+        </div>
+      </main>
+    </section>
+    <section class="w-100 vh-100 bg-warning-subtle" id="overview">
+      <main class="container d-flex flex-column justify-content-center h-100">
+        <h2 class="display-1 fw-bold">Pendahuluan</h2>
+        <p class="h2 fw-light">Mungkin beberapa orang masih bingung dengan <strong>cara belajar bahasa baru</strong> termasuk <strong><em>bahasa inggris</em></strong>. Ini adalah hal yang normal bagi <strong>pemula</strong> yang <strong>tidak memiliki mentor</strong> atau baru minat belajar bahasa baru ini setelah lulus dari pendidikan formal.</p>
+      </main>
+    </section>
+    <section class="w-100 vh-100" id="objective">
+      <main class="container d-flex flex-column justify-content-center h-100">
+        <h2 class="display-1 fw-bold">Tujuan</h2>
+        <p class="h2 fw-light">Mengoptimalkan cara belajar dalam bahasa inggris maupun bahasa yang ingin dikuasai. Kebanyakan orang saat belajar bahasa, mereka sering kehilangan motivasi untuk belajar saat sudah setengah jalan.</p>
+        <p class="h2 fw-light mt-4">Tips ini akan membantu kamu agar belajar kamu terarah dan mencegah <em title="bosan">burnout</em>.</p>
+      </main>
+    </section>
+    <section class="w-100 py-6 vh-100 bg-dark text-warning" id="roadmap">
+      <main class="container d-flex flex-column justify-content-center h-100 px-4 relative">
+        <h2 class="display-1 fw-bold">Tips Belajar Bahasa Baru</h2>
+        <p class="h2 fw-light text-white">Secara garis besar, tipsnya adalah sebagai berikut:</p>
+        <ul class="row mt-4 list-unstyled text-center text-md-start bg-warning fw-semibold">
+          <li class="col-9 col-md-4 bg-warning text-dark border border-light">Mental </li>
+          <li class="col-3 col-md-2 bg-warning-subtle text-dark border border-light">Keseharian</li>
+          <li class="col-4 col-md-2 bg-warning-subtle text-dark border border-light">Membaca</li>
+          <li class="col-4 col-md-2 bg-warning-subtle text-dark border border-light">Mendengar</li>
+          <li class="col-4 col-md-2 bg-warning-subtle text-dark border border-light">Menulis</li>
+        </ul>
+        <div class="w-100 h-25 mt-4 d-flex flex-column justify-content-end align-items-center">
+          <h1 class="fw-light lead">Scroll Down</h1>
+          <span>	
+            &#709;</span>
+        </div>
+      </main>
+    </section>
+    
+    <section class="w-100 py-6 bg-dark text-warning" id="mentality">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">0. Mental</h2>
+        <p class="h2 fw-light text-white">Mental adalah langkah yang paling penting sebelum mulai belajar. </p>
+        <p class="h2 mt-4 fw-medium text-white">Kenapa kita perlu persiapan mental?</p>
+        <p class="h2 mt-2 fw-light text-white">Belajar itu seperti lari marathon. Kamu perlu bersabar untuk mencapai tujuan garis finish. Karena perjalanan kamu panjang, kamu mungkin akan merasa kelelahan dan ingin menyerah di tengah perjalanan.</p>
+        <p class="h2 mt-2 fw-light text-white">Ini dinamakan demotivation (menurunnya tingkat motivasi). Nah, untuk mencegah hal ini, kita perlu mengingat tujuan belajar kita selama ini.</p>
+        <p class="h2 mt-2 fw-light text-white">Pastikan bahwa tujuan itu jelas dan tidak ambigu. Misal aku ingin belajar bahasa inggris agar aku bisa membaca novel tanpa menerjemahkannya ke dalam bahasa Indonesia. Atau Aku ingin belajar bahasa Jepang agar aku bisa bekerja di negara Jepang.</p>
+      </article>
+      <br>
+      <br>
+      <br>
+    </section>
+    <section class="w-100 py-6 bg-dark text-warning" id="habbits">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">1. Melibatkan bahasa <stong class="text-light">Inggris</stong> ke kehidupan sehari-hari kamu.</h2>
+        <p class="h2 fw-light text-white">Beberapa contoh melibatkan bahasa Inggris seperti mengganti bahasa default perangkat yang sering kita pakai, membaca komik/novel dalam bahasa Inggris, dan masih banyak lagi. </p>
+        <p class="h2 mt-4 fw-medium text-white">Kenapa ini perlu dilakukan?</p>
+        <p class="h2 mt-2 fw-light text-white">Tips ini bisa membantumu agar terbiasa dengan kata bahasa inggris.</p>
+        <p class="h2 mt-2 fw-light text-white">Jika kamu sudah memahami bahasa perangkat kamu sebelumnya, metode ini bisa membantumu memahami istilah sebelumnya kedalam bahasa inggris.</p>
+        <p class="h2 mt-2 fw-light text-white">Dengan begitu, kamu bisa lebih cepat memahami beberapa kata baru dalam bahasa Inggris tanpa kamu sadari.</p>
+    </article>
+    <br>
+    <br>
+    <br>
+  </section>
+    <section class="w-100 py-6 bg-dark text-warning" id="read">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">2. Mulai belajar dari <stong class="text-light">Membaca</stong></h2>
+        <p class="h2 mt-4 fw-medium text-white">Kenapa mulai dari membaca?</p>
+        <p class="h2 fw-light text-white">Karena membaca itu tidak dipengaruhi accent ataupun pronunciation.</p>
+        <p class="h2 mt-2 fw-light text-white">apa itu accent? Accent adalah (logat) cara seseorang mengucapkan sesuatu memiliki ciri khas.</p>
+        <p class="h2 mt-2 fw-light text-white">Apa itu pronunciation? Pronunciation adalah cara melafalkan kata termasuk tekanan, intonasi, dan ritme.</p>
+        <p class="h2 mt-2 fw-light text-white">Coba mulai dengan membaca yang memiliki visual karena bisa memberi sebuah konteks bacaan yang kamu baca. Ini bisa membantumu untuk mengerti kata ke dalam visual.</p>
+        <p class="h2 mt-2 fw-light text-white">Ini adalah cara yang paling mudah belajar bahasa Inggris.</p>
+      </article>
+      <br>
+      <br>
+      <br>
+    </section>
+    <section class="w-100 py-6 bg-dark text-warning" id="hearing">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">3. <strong class="text-light">Mendengar</strong> / <strong class="text-light">Menonton</strong> Film dalam bahasa Inggris</h2>
+        <p class="h2 mt-4 fw-medium text-white">Tujuannya untuk apa?</p>
+        <p class="h2 fw-light text-white">Untuk melatih pendengaran dalam bahasa Inggris.</p>
+        <p class="h2 mt-2 fw-light text-white">Caranya adalah kamu harus mengubah subtitle dan dubbing ke dalam bahasa Inggris.</p>
+        <p class="h2 mt-2 fw-light text-white">Kamu bisa memulai dengan film series seperti <strong class="fw-medium">F.R.I.E.N.D.S</strong>, <strong class="fw-medium">Modern Family</strong>, <strong class="fw-medium">Broken Nine-nine</strong>.</p>
+        <p class="h2 mt-2 fw-light text-white">Itu semua adalah film komedi.</p>
+        <p class="h2 mt-2 fw-light text-white">Kenapa harus film komedi? Karena film komedi terkadang memakai bahasa yang mudah dimengerti.</p>
+      </article>
+      <br>
+      <br>
+      <br>
+    </section>
+    <section class="w-100 py-6 bg-dark text-warning" id="write">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">4. Latihan <strong class="text-light">Menulis</strong> dan <strong class="text-light">Berbicara</strong></h2>
+        <p class="h2 mt-4 fw-medium text-white">Tips yang terakhir ini tidak ada cara instant dan kamu harus terus melatihnya secara terus-menerus.</p>
+        <p class="h2 fw-light text-white">Jadikan ini sebuah kebiasan juga agar kamu tidak terlalu terbebani.</p>
+      </article>
+      <br>
+      <br>
+      <br>
+    </section>
+    <section class="w-100 vh-100 bg-dark text-warning" id="conclusion">
+      <article class="container d-flex flex-column justify-content-center h-100 px-4">
+        <h2 class="display-1 fw-bold">Kesimpulan</h2>
+        <p class="h2 fw-light text-white">Belajar bahasa baru itu tidak sulit, yang sulit adalah memulai dan konsisten.</p>
+        <p class="h2 mt-4 fw-medium text-white">Jadi, apa kamu sudah siap untuk belajar bahasa baru?</p>
+      </article>
+      <br>
+      <br>
+      <br>
+    </section>
+    <section class="w-100 vh-100 bg-warning text-dark">
+      <form class="w-100 h-100 p-4 d-flex justify-content-center align-items-center">
+        <div class="mb-3 w-75">
+          <label for="email" class="form-label w-100 text-center fw-semibold display-3">Pengen informasi yang lain? Tak kasih info nanti</label>
+          <input type="email" name="email" id="email" class="form-control form-control-lg text-center mt-4 p-4" placeholder="your@email.com" />
+          <button type="submit" class="btn btn-dark w-100 text-warning fw-bold text-center p-4 mt-4">
+            SUBSCRIBE
+          </button>
+      </form>
+    </section>
+
+    <script>
+      function openAlert() {
+        const alertElement = document.querySelector("#alertChoose");
+        const buttonElement = document.querySelector("#handleAlert");
+        const spinnerElement = document.querySelector("#spinner");
+        const labelBtnElement = document.querySelector("#btn-label");
+        alertElement.classList.remove("d-none");
+        buttonElement.setAttribute("disabled", "true");
+        buttonElement.classList.remove("btn-dark");
+        buttonElement.classList.add("btn-secondary");
+        spinnerElement.classList.remove("d-none");
+        labelBtnElement.classList.add("d-none");
+        setTimeout(() => {
+          alertElement.classList.add("d-none");
+          buttonElement.classList.remove("btn-secondary");
+          buttonElement.classList.add("btn-dark");
+          buttonElement.removeAttribute("disabled");
+          spinnerElement.classList.add("d-none");
+          labelBtnElement.classList.remove("d-none");
+        }, 2000);
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"
+      integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
